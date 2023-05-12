@@ -5,7 +5,8 @@
     <view>
       <img src="" alt="">
     </view>
-    {{ msg }} <Dongdong />
+    <view class="text-base">22</view>
+    <view style="font-size:32rpx">{{ msg }} <Dongdong /></view>
     <view class="btn">
       <nut-button type="primary" @click="handleClick('text', msg2, true)">点我</nut-button>
     </view>
