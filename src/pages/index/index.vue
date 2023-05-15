@@ -1,28 +1,32 @@
 <template>
   <view class="index">
-    <nut-searchbar v-model="searchValue">
+    <nut-searchbar v-model="searchValue" @search="search">
+      <template v-slot:leftin>
+        <Search2 />
+      </template>
     </nut-searchbar>
-    <view>
-      <img src="" alt="">
-    </view>
-    <view class="text-base">22</view>
-    <view style="font-size:32rpx">{{ msg }} <Dongdong /></view>
-    <view class="btn">
-      <nut-button type="primary" @click="handleClick('text', msg2, true)">点我</nut-button>
-    </view>
+    <nut-swiper :init-page="page" :pagination-visible="true" height="192" pagination-color="#426543" auto-play="3000">
+      <nut-swiper-item v-for="(item,index) in list" :key="item" @click="handleSwiper(index)">
+        <img :src="item" alt="" />
+      </nut-swiper-item>
+    </nut-swiper>
+    <GoodsCard></GoodsCard>
     <nut-toast :msg="msg2" v-model:visible="show" :type="type" :cover="cover"/>
   </view>
 </template>
 
 <script>
 import { reactive, toRefs } from 'vue';
-import { Dongdong } from '@nutui/icons-vue-taro';
+import { Dongdong, Search2 } from '@nutui/icons-vue-taro';
 // import { useCounterStore  } from '@/stores/index'
+import GoodsCard from '@/components/goods-card/index.vue'
 
 export default { 
   name: 'Index',
   components: {
-    Dongdong
+    Dongdong,
+    Search2,
+    GoodsCard
   },
   setup() {
     // const counter = useCounterStore ()
@@ -32,7 +36,14 @@ export default {
       type: 'text',
       show: false,
       cover: false,
-      searchValue: ""
+      searchValue: "",
+      page: 2,
+      list: [
+        'https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg',
+        'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+        'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
+        'https://storage.360buyimg.com/jdc-article/fristfabu.jpg'
+      ]
     });
 
     const handleClick = (type, msg, cover = false) => {
@@ -47,9 +58,21 @@ export default {
       // counter.increment(num)
     };
 
+    const search = function () {
+      state.show = true;
+      state.msg2 = "点击swiper";
+    };
+
+    const handleSwiper = (index) => {
+      state.show = true;
+      state.msg2 = msg;
+    }
+
     return {
       ...toRefs(state),
       handleClick,
+      search,
+      handleSwiper
       // counter
     }
   }
@@ -57,7 +80,12 @@ export default {
 </script>
 
 <style lang="scss">
-.index {
-  margin-top:60px;
-}
+  .nut-swiper-item {
+    margin:0 25rpx;
+    img {
+      width: 700rpx;
+      height: 100%;
+      border-radius: 12rpx;
+    }
+  }
 </style>
